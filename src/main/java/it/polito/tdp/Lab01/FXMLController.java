@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
 public class FXMLController {
 	
 	Parole elenco ;
-
+	
     @FXML
     private ResourceBundle resources;
 
@@ -27,20 +27,64 @@ public class FXMLController {
     private Button btnReset;
 
     @FXML
+    private Button btnCancella;
+    
+    @FXML
     private TextField txtParola;
 
     @FXML
     private TextArea txtResult;
+    
+    @FXML
+    private TextArea txtTempo;
 
     @FXML
     void doInsert(ActionEvent event) {
-
+    	Long start=System.nanoTime();
+    	
+    	elenco.addParola(this.txtParola.getText());
+    	
+    	this.txtResult.clear();
+    	for(String s: elenco.getElenco()) {
+    		if(s!="")
+    			this.txtResult.appendText(s+"\n");
+    	}
+    	this.txtParola.clear();
+    	Long end=System.nanoTime();
+    	this.txtTempo.setText(""+(end-start));
+    	
+    	
     }
 
     @FXML
     void doReset(ActionEvent event) {
-
+    	Long start=System.nanoTime();
+    	
+    	elenco.reset();
+    	this.txtResult.clear();
+    	
+    	Long end=System.nanoTime();
+    	this.txtTempo.setText(""+(end-start));
     }
+    
+    @FXML
+    void doCancella(ActionEvent event) {
+    	Long start=System.nanoTime();
+    	
+    	String daRimuovere=this.txtParola.getText();
+    	elenco.cancella(daRimuovere);
+    	
+    	this.txtResult.clear();
+    	for(String s: elenco.getElenco()) {
+    		this.txtResult.appendText(s+"\n");
+    	}
+    	this.txtParola.clear();
+    	Long end=System.nanoTime();
+    	this.txtTempo.setText(""+(end-start));
+    	
+    	
+    }
+    
 
     @FXML
     void initialize() {
